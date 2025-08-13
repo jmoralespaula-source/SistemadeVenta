@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-07-2021 a las 11:03:00
--- Versión del servidor: 10.4.14-MariaDB
--- Versión de PHP: 7.4.9
+-- Tiempo de generación: 13-08-2025 a las 19:44:57
+-- Versión del servidor: 10.4.32-MariaDB
+-- Versión de PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de datos: `sis_java`
+-- Base de datos: `sistemadeventa`
 --
 
 -- --------------------------------------------------------
@@ -29,10 +29,10 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `clientes` (
   `id` int(11) NOT NULL,
-  `dni` varchar(8) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre` varchar(180) COLLATE utf8_spanish_ci NOT NULL,
-  `telefono` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
-  `direccion` varchar(255) COLLATE utf8_spanish_ci NOT NULL
+  `dni` varchar(8) NOT NULL,
+  `nombre` varchar(180) NOT NULL,
+  `telefono` varchar(15) NOT NULL,
+  `direccion` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -40,7 +40,11 @@ CREATE TABLE `clientes` (
 --
 
 INSERT INTO `clientes` (`id`, `dni`, `nombre`, `telefono`, `direccion`) VALUES
-(1, '1234598', 'Angel sifuentes', '924878', 'Lima - Perú');
+(1, '87654321', 'María López Fernández	', '+34 934567890	', 'Avenida Diagonal, 200, 4º B, 08018 Barcelona\r\n'),
+(2, '11223344', 'Carlos Sánchez Ruiz	', '666 555 444	', 'Plaza de la Constitución, 5, 41004 Sevilla\r\n'),
+(3, '55667788', 'Ana Gutiérrez Morales	', '958123123', 'Paseo de los Tristes, 10, Bajo, 18010 Granada\r\n'),
+(4, '12345678', 'Juan Pérez García	', '612345678', 'Calle Mayor, 1, 28013 Madrid'),
+(5, '99887766', 'Lucía Moreno Jiménez	', '650 12 34 56	', 'Calle de la Paz, 22, 46003 Valencia\r\n');
 
 -- --------------------------------------------------------
 
@@ -51,10 +55,10 @@ INSERT INTO `clientes` (`id`, `dni`, `nombre`, `telefono`, `direccion`) VALUES
 CREATE TABLE `config` (
   `id` int(11) NOT NULL,
   `ruc` int(15) NOT NULL,
-  `nombre` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
+  `nombre` varchar(255) NOT NULL,
   `telefono` int(11) NOT NULL,
-  `direccion` text COLLATE utf8_spanish_ci NOT NULL,
-  `mensaje` varchar(255) COLLATE utf8_spanish_ci NOT NULL
+  `direccion` text NOT NULL,
+  `mensaje` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -62,7 +66,7 @@ CREATE TABLE `config` (
 --
 
 INSERT INTO `config` (`id`, `ruc`, `nombre`, `telefono`, `direccion`, `mensaje`) VALUES
-(1, 71347267, 'Vida Informático', 925491523, 'Lima - Perú', 'Vida Informático');
+(1, 2011223344, 'Comercial del Norte S.R.L.	', 4423459, 'Jr. Pizarro 789, Centro, Trujillo	', 'Su tranquilidad, nuestro compromiso.');
 
 -- --------------------------------------------------------
 
@@ -78,13 +82,6 @@ CREATE TABLE `detalle` (
   `id_venta` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
---
--- Volcado de datos para la tabla `detalle`
---
-
-INSERT INTO `detalle` (`id`, `id_pro`, `cantidad`, `precio`, `id_venta`) VALUES
-(4, 1, 5, '3000.00', 4);
-
 -- --------------------------------------------------------
 
 --
@@ -93,8 +90,8 @@ INSERT INTO `detalle` (`id`, `id_pro`, `cantidad`, `precio`, `id_venta`) VALUES
 
 CREATE TABLE `productos` (
   `id` int(11) NOT NULL,
-  `codigo` varchar(20) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre` text COLLATE utf8_spanish_ci NOT NULL,
+  `codigo` varchar(20) NOT NULL,
+  `nombre` text NOT NULL,
   `proveedor` int(11) NOT NULL,
   `stock` int(11) NOT NULL,
   `precio` decimal(10,2) NOT NULL
@@ -105,7 +102,11 @@ CREATE TABLE `productos` (
 --
 
 INSERT INTO `productos` (`id`, `codigo`, `nombre`, `proveedor`, `stock`, `precio`) VALUES
-(1, '79878789', 'Laptop lenovo', 1, 20, '3000.00');
+(1, 'LAP-APP-M1	', 'Laptop MacBook Air M1 13\"	', 1, 25, 999.99),
+(2, '7501055310254', 'Coca-Cola Sin Azúcar 600ml	', 3, 350, 15.50),
+(3, 'SKU-00125	', 'Resma de Papel Bond 500 Hojas	', 3, 150, 95.00),
+(4, 'CAF-ORG-250G	', 'Café Orgánico Tostado 250g	', 4, 80, 120.75),
+(5, '9788433932829', 'Libro \"El Quijote\" (Ed. Bolsillo)	', 5, 45, 250.00);
 
 -- --------------------------------------------------------
 
@@ -115,10 +116,10 @@ INSERT INTO `productos` (`id`, `codigo`, `nombre`, `proveedor`, `stock`, `precio
 
 CREATE TABLE `proveedor` (
   `id` int(11) NOT NULL,
-  `ruc` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
-  `nombre` varchar(255) COLLATE utf8_spanish_ci NOT NULL,
-  `telefono` varchar(15) COLLATE utf8_spanish_ci NOT NULL,
-  `direccion` varchar(255) COLLATE utf8_spanish_ci NOT NULL
+  `ruc` varchar(15) NOT NULL,
+  `nombre` varchar(255) NOT NULL,
+  `telefono` varchar(15) NOT NULL,
+  `direccion` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -126,7 +127,10 @@ CREATE TABLE `proveedor` (
 --
 
 INSERT INTO `proveedor` (`id`, `ruc`, `nombre`, `telefono`, `direccion`) VALUES
-(1, '998787', 'Open Services', '798978879', 'Lima - Perú');
+(1, '20123456789', 'Distribuidora Tech Global S.A.C.	', '(01) 444-5555	', 'Av. El Sol 123, Piso 10, San Isidro, Lima\r\n'),
+(3, '20987654321', 'Comercial OfficePro S.R.L.	', '(054) 25-8090	', 'Calle Mercaderes 404, Arequipa Centro, Arequipa\r\n'),
+(4, '10456789012', 'Maria Rojas (Finca Santa Cruz)	', '987654321', 'Carretera Central Km 45, Chanchamayo, Junín\r\n'),
+(5, '20556677889', 'Empaques y Logística del Sur	', '951-123-456	', 'Parque Industrial Rio Seco, Mz. A Lote 5, Arequipa\r\n');
 
 -- --------------------------------------------------------
 
@@ -136,10 +140,10 @@ INSERT INTO `proveedor` (`id`, `ruc`, `nombre`, `telefono`, `direccion`) VALUES
 
 CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
-  `nombre` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
-  `correo` varchar(200) COLLATE utf8_spanish_ci NOT NULL,
-  `pass` varchar(50) COLLATE utf8_spanish_ci NOT NULL,
-  `rol` varchar(20) COLLATE utf8_spanish_ci NOT NULL
+  `nombre` varchar(200) NOT NULL,
+  `correo` varchar(200) NOT NULL,
+  `pass` varchar(50) NOT NULL,
+  `rol` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 --
@@ -147,8 +151,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`id`, `nombre`, `correo`, `pass`, `rol`) VALUES
-(1, 'Angel Sifuentes', 'angel@gmail.com', 'admin', 'Administrador'),
-(2, 'Vida Informatico', 'admin@gmail.com', 'admin', 'Administrador');
+(1, 'Laura Ramírez', 'lauraramir2008@gmail.com', 'Laura2025', 'Administrador'),
+(2, 'Juan Carlos Valle', 'admin@gmail.com', 'admin', 'Administrador');
 
 -- --------------------------------------------------------
 
@@ -159,17 +163,10 @@ INSERT INTO `usuarios` (`id`, `nombre`, `correo`, `pass`, `rol`) VALUES
 CREATE TABLE `ventas` (
   `id` int(11) NOT NULL,
   `cliente` int(11) NOT NULL,
-  `vendedor` varchar(60) COLLATE utf8_spanish_ci NOT NULL,
+  `vendedor` varchar(60) NOT NULL,
   `total` decimal(10,2) NOT NULL,
-  `fecha` varchar(20) COLLATE utf8_spanish_ci NOT NULL
+  `fecha` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
-
---
--- Volcado de datos para la tabla `ventas`
---
-
-INSERT INTO `ventas` (`id`, `cliente`, `vendedor`, `total`, `fecha`) VALUES
-(4, 1, 'Angel Sifuentes', '15000.00', '25/07/2021');
 
 --
 -- Índices para tablas volcadas
@@ -229,7 +226,7 @@ ALTER TABLE `ventas`
 -- AUTO_INCREMENT de la tabla `clientes`
 --
 ALTER TABLE `clientes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `config`
@@ -247,13 +244,13 @@ ALTER TABLE `detalle`
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `proveedor`
 --
 ALTER TABLE `proveedor`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
